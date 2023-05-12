@@ -3,7 +3,7 @@ use std::{fmt::Display, str::{FromStr, self}};
 use thiserror::Error;
 
 #[derive(Error, Debug)]
-enum ChunkTypeError {
+pub enum ChunkTypeError {
     #[error("Invalid byte for type: {0}")]
     InvalidByte(u8),
     #[error("Type must be 4 bytes long")]
@@ -11,32 +11,32 @@ enum ChunkTypeError {
 }
 
 #[derive(Debug, Eq, PartialEq)]
-struct ChunkType {
+pub struct ChunkType {
     bytes: [u8; 4],
 }
 
 impl ChunkType {
-    fn bytes(&self) -> [u8; 4] {
+    pub fn bytes(&self) -> [u8; 4] {
         self.bytes
     }
 
-    fn is_valid(&self) -> bool {
+    pub fn is_valid(&self) -> bool {
         self.is_reserved_bit_valid() && self.bytes.iter().all(|b| b.is_ascii_alphabetic())
     }
 
-    fn is_critical(&self) -> bool {
+    pub fn is_critical(&self) -> bool {
         self.bytes[0].is_ascii_uppercase()
     }
 
-    fn is_public(&self) -> bool {
+    pub fn is_public(&self) -> bool {
         self.bytes[1].is_ascii_uppercase()
     }
 
-    fn is_reserved_bit_valid(&self) -> bool {
+    pub fn is_reserved_bit_valid(&self) -> bool {
         self.bytes[2].is_ascii_uppercase()
     }
 
-    fn is_safe_to_copy(&self) -> bool {
+    pub fn is_safe_to_copy(&self) -> bool {
         self.bytes[3].is_ascii_lowercase()
     }
 }
