@@ -1,3 +1,6 @@
+// TODO: Remove once the methods are used
+#![allow(dead_code)]
+
 use crate::chunk_type::{ChunkType, ChunkTypeError};
 use crc::{Crc, CRC_32_ISO_HDLC};
 use std::fmt::Display;

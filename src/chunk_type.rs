@@ -1,4 +1,10 @@
-use std::{fmt::Display, str::{FromStr, self}};
+// TODO: Remove once the methods are used
+#![allow(dead_code)]
+
+use std::{
+    fmt::Display,
+    str::{self, FromStr},
+};
 
 use thiserror::Error;
 
