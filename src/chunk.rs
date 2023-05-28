@@ -39,9 +39,9 @@ impl Chunk {
         );
         Self {
             length: data.len().try_into().unwrap(),
-            chunk_type: chunk_type,
-            data: data,
-            crc: crc,
+            chunk_type,
+            data,
+            crc,
         }
     }
 
