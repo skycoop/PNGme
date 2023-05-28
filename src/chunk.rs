@@ -8,8 +8,6 @@ use std::io::{self, BufReader, Read};
 use std::str::{self, Utf8Error};
 use thiserror::Error;
 
-const CRC32: Crc<u32> = Crc::<u32>::new(&CRC_32_ISO_HDLC);
-
 #[derive(Error, Debug)]
 pub enum ChunkError {
     #[error("Data could not be encoded as UTF-8.")]
@@ -30,8 +28,10 @@ pub struct Chunk {
 }
 
 impl Chunk {
-    fn new(chunk_type: ChunkType, data: Vec<u8>) -> Self {
-        let crc = CRC32.checksum(
+    const CRC32: Crc<u32> = Crc::<u32>::new(&CRC_32_ISO_HDLC);
+
+    pub fn new(chunk_type: ChunkType, data: Vec<u8>) -> Self {
+        let crc = Chunk::CRC32.checksum(
             chunk_type
                 .bytes()
                 .iter()
@@ -48,27 +48,27 @@ impl Chunk {
         }
     }
 
-    fn length(&self) -> u32 {
+    pub fn length(&self) -> u32 {
         self.length
     }
 
-    fn chunk_type(&self) -> &ChunkType {
+    pub fn chunk_type(&self) -> &ChunkType {
         &self.chunk_type
     }
 
-    fn data(&self) -> &[u8] {
+    pub fn data(&self) -> &[u8] {
         &self.data
     }
 
-    fn crc(&self) -> u32 {
+    pub fn crc(&self) -> u32 {
         self.crc
     }
 
-    fn data_as_string(&self) -> Result<String, ChunkError> {
+    pub fn data_as_string(&self) -> Result<String, ChunkError> {
         Ok(str::from_utf8(self.data())?.to_string())
     }
 
-    fn as_bytes(&self) -> Vec<u8> {
+    pub fn as_bytes(&self) -> Vec<u8> {
         self.length
             .to_be_bytes()
             .iter()
